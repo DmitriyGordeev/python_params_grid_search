@@ -1,0 +1,26 @@
+{
+  "days": 6,
+  "pnl": -5394.079999999996,
+  "sharpe": -0.7788085789733994,
+  "average_daily_pnl": -899.0133333333328,
+  "positive_days": 4,
+  "negative_days": 2,
+  "zero_days": 0,
+  "min_daily_pnl": -29688.52,
+  "average_daily_volume": 1075.6666666666667,
+  "cumulative_volume": 6454,
+  "average_daily_score": 27.163257634581672,
+  "20days": {
+    "days": 6,
+    "pnl": -5394.079999999996,
+    "sharpe": -0.7788085789733994,
+    "average_daily_pnl": -899.0133333333328,
+    "positive_days": 4,
+    "negative_days": 2,
+    "zero_days": 0,
+    "min_daily_pnl": -29688.52,
+    "average_daily_volume": 1075.6666666666667,
+    "cumulative_volume": 6454,
+    "average_daily_score": 27.163257634581672
+  }
+}

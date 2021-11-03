@@ -1,0 +1,15 @@
+{
+    "turnover_sum": 10406, 
+    "max_drawdown": 9898.42, 
+    "negative_days": 0, 
+    "pnl": 36291.060001, 
+    "avg_turnover_day": 5203.0, 
+    "positive_days": 2, 
+    "calmar": 1000, 
+    "avg_score_ratio_day": 57.68421117239633, 
+    "avg_pnl_day": 18145.5300005, 
+    "days": 2, 
+    "total_zero_crossing": 139, 
+    "sharpe": 34.9275514350172, 
+    "min_pnl": 9898.42
+}

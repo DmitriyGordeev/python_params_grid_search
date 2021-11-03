@@ -1,0 +1,18 @@
+{
+    "positive_days": 2, 
+    "sum_market_volume": 1136115, 
+    "calmar": "+INF, all days are positive", 
+    "market_share": 0.9159284051350436, 
+    "avg_score_ratio_day": 57.68421117239633, 
+    "max_drawdown": 26392.640001, 
+    "zero_days": 0, 
+    "avg_pnl_day": 18145.5300005, 
+    "days": 2, 
+    "avg_turnover_day": 5203.0, 
+    "negative_days": 0, 
+    "pnl": 36291.060001, 
+    "sharpe": 34.9275514350172, 
+    "sum_turnover": 10406, 
+    "min_pnl": 9898.42, 
+    "avg_daily_volume": 568057.5
+}
