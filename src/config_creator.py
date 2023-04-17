@@ -1,11 +1,11 @@
-import re
-import os
 import ntpath
-import pandas
+import os
+import re
 from xml.etree import ElementTree
-import varparser
 
-from string import join
+import pandas
+
+import varparser
 
 
 class ConfigCreator:
@@ -26,7 +26,6 @@ class ConfigCreator:
         self.params_table = pandas.DataFrame(columns=param_names)
         self.current_params = pandas.Series()
 
-
     @staticmethod
     def read_pattern(pattern_path):
         """
@@ -39,20 +38,18 @@ class ConfigCreator:
         f.close()
         return content
 
-
     def find_vars(self):
         """
             Collects the names of the variables specified for optimizing
-            e.g. {{edge, 10, 20, F}}, {{adj_keep_edge, 10, 20, F}} and adds it to 'self.vars' array
+            e.g. {{param1, 10, 20, F}}, {{param2, 10, 20, F}} and adds it to 'self.vars' array
         """
         for l in self.pattern.split("\n"):
             self.parse_variables(l)
         self.search_duplicates()
 
-
     def parse_variables(self, s):
         """
-            Parses a particular variable and gets it's settings:
+            Parses a particular variable and gets its settings:
              name, min value, max value and flag: I-int, F-float
              and adds it to 'self.vars' array
              example: {{x, 0, 10, I}}
@@ -71,7 +68,6 @@ class ConfigCreator:
         if len(linspace_vars + enum_vars) != 0:
             self.vars = self.vars + (linspace_vars + enum_vars)
 
-
     def search_duplicates(self):
         """
             Searches for duplicates in 'self.vars'
@@ -84,7 +80,6 @@ class ConfigCreator:
                                      "Variable '" + self.vars[i]["name"] + "' is specified "
                                                                            "for optimization multiple times with " +
                                      "different params")
-
 
     def create_config(self, x, num_of_itr, suffix, write_config=True):
         """
@@ -104,10 +99,10 @@ class ConfigCreator:
         # Applying constraints specified inside <optimizer>...</optimizer>:
         expr = self.modify_expression()
         try:
-            exec expr
+            exec(expr)
         except Exception as e:
-            print "[EXCEPTION] exec has produced an exception:", e
-            print "Expression is: ", expr
+            print("[EXCEPTION] exec has produced an exception:", e)
+            print("Expression is: ", expr)
             exit(1)
 
         local_vars_dict = locals()
@@ -125,19 +120,16 @@ class ConfigCreator:
 
         self.params_table = self.params_table.append(self.current_params, ignore_index=True)
 
-
         # Searching for variables generated inside <optimzier></optimizer> via exec and
         # replace with value
         config_lines = config.split("\n")
         for i in range(0, len(config_lines)):
             for varname in local_vars_dict:
-                # TODO: this may cause bugs (?)
                 varmatches = re.findall("{{.*" + varname + ".*}}", config_lines[i])
                 if len(varmatches) != 0:
                     varmatch = varmatches[0]
                     varmatch = varmatch.replace(varname, str(local_vars_dict[varname]))
                     config_lines[i] = config_lines[i].replace(varmatches[0], varmatch)
-
 
         # Replacing formulas with eval():
         # splitting config into lines, then search equations in each line
@@ -151,7 +143,7 @@ class ConfigCreator:
                 config_lines[i] = config_lines[i].replace("{{" + e + "}}", str(val))
 
         # Join back config_lines:
-        config = join(config_lines, "\n")
+        config = "\n".join(config_lines)
 
         # Removing optimizer tag:
         config = self.remove_optimizer_node(config)
@@ -162,7 +154,6 @@ class ConfigCreator:
             config_file.close()
 
         return self.current_params, config_path
-
 
     def get_names(self):
         """
@@ -175,7 +166,6 @@ class ConfigCreator:
             out.append(v["name"])
         return out
 
-
     def get_lowers(self):
         """
             Exposes minimal value of each variable from 'self.vars'
@@ -186,7 +176,6 @@ class ConfigCreator:
         for v in self.vars:
             out.append(v["min"])
         return out
-
 
     def get_uppers(self):
         """
@@ -199,7 +188,6 @@ class ConfigCreator:
             out.append(v["max"])
         return out
 
-
     def get_types(self):
         """
             Exposes type of each variable from 'self.vars'
@@ -210,7 +198,6 @@ class ConfigCreator:
         for v in self.vars:
             out.append(v["type"])
         return out
-
 
     def get_constraints(self):
         # Reading <optimizer> tag from xml
@@ -228,9 +215,8 @@ class ConfigCreator:
 
         # Joining together into single expression with ;-separated to exec as a single line
         lines = filter(lambda a: a != "", lines)
-        expr = join(lines, ";")
+        expr = ";".join(lines)
         return expr
-
 
     def modify_expression(self):
         # find index of a variable in the vars array and replace it with 'x[i]'
@@ -240,7 +226,6 @@ class ConfigCreator:
                 expr = expr.replace(v["name"], "x[" + str(i) + "]")
         return expr
 
-
     @staticmethod
     def remove_optimizer_node(input_xml):
         doc = ElementTree.ElementTree(ElementTree.fromstring(input_xml))
@@ -249,7 +234,6 @@ class ConfigCreator:
             root.remove(e)
         xmlstr = ElementTree.tostring(root, encoding='utf8', method='xml')
         return xmlstr
-
 
     def eval(self, expression_string, values):
         """ Evaluates and expression with given values according to self.vars
@@ -266,7 +250,6 @@ class ConfigCreator:
 
         return eval(expression_string)
 
-
     @staticmethod
     def find_expr(input_str, start_index):
         p_open = input_str.find('{{', start_index)
@@ -276,7 +259,6 @@ class ConfigCreator:
             return p_close, input_str[p_open + 2:p_close]
         else:
             return -1, ""
-
 
     @staticmethod
     def all_expr(input_str):
@@ -289,7 +271,6 @@ class ConfigCreator:
             if start_index == -1:
                 break
         return refs
-
 
     def get_params_table(self):
         return self.params_table

@@ -80,6 +80,6 @@ def arguments():
     parser.add_argument('-resume', '--resume',
                         action='store_true',
                         required=False,
-                        help='')
+                        help='catch info file from the previous run and resume from paused point')
 
     return parser

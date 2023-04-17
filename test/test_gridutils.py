@@ -1,5 +1,7 @@
-import gridutils
 import unittest
+
+import gridutils
+
 
 class TestGridUtils(unittest.TestCase):
 
@@ -7,4 +9,4 @@ class TestGridUtils(unittest.TestCase):
         v1 = {"name": "edge", "min": 100, "max": 200, "step": 26, "type": "S"}
         v2 = {"name": "edge", "values": [110, 156, 89], "type": "E"}
 
-        print gridutils.define_grid([v1, v2])
+        print(gridutils.define_grid([v1, v2]))

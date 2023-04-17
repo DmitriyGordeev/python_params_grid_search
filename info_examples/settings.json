@@ -1,5 +1,5 @@
 {
-  "executable": "/home/oleg/carle2.zip",
+  "executable": "path/to/executable",
   "grid_log_file": "grid.log",
   "summary_file_name": "info.json"
 }

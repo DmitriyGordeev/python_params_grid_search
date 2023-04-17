@@ -58,7 +58,6 @@ def define_grid(variables):
     each struct is {"name", "min", "max", "type"}.
     Returns arrays of allocated spaces for each variable
     :param variables: array of structures
-    :param step: how many points between min and max values for each dimension (variable)
     :return: array of arrays
     """
     grid_arrays = []

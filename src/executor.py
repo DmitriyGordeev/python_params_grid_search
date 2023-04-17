@@ -1,11 +1,11 @@
-import pandas
-import logging
+import glob
 import json
-import config_creator
+import logging
+import ntpath
 import os
 import subprocess
-import glob
-import ntpath
+
+import config_creator
 
 
 class MetricsObject:
@@ -41,10 +41,8 @@ class Executor:
         # self.results_table = pandas.DataFrame(columns=param_columns)  # empty dataframe to store results for each iteration at the end
         # self.current_results = pandas.Series()
 
-
     def create_config(self, x, number_of_itr, suffix, write_config=True):
         return self.config_creator.create_config(x, number_of_itr, suffix, write_config)
-
 
     def execute(self,
                 executable_path,
@@ -55,10 +53,6 @@ class Executor:
                 stdout_log_path):
 
         stdout_log_file = open(stdout_log_path, "w")
-
-        # rollover_rules = self.rollover_rules
-        # if self.rollover_rules is "":
-        #     rollover_rules = "\'\'"
 
         argument_list = ['python',
                          executable_path,
@@ -80,10 +74,9 @@ class Executor:
             argument_list = argument_list + ['-bl', str(self.blacklist_file)]
 
         return subprocess.Popen(argument_list,
-                         close_fds=True,
-                         stdout=stdout_log_file,
-                         stderr=subprocess.STDOUT)
-
+                                close_fds=True,
+                                stdout=stdout_log_file,
+                                stderr=subprocess.STDOUT)
 
     def parse_info_json(self, location):
 
@@ -219,7 +212,6 @@ class Executor:
                 else:
                     logging.info(mo.leg_name + "total_trading_cycles = 0 (run with --short to make it non zero)")
 
-
             # Copy every metrics into current_result series:
             for key, value in mo.json_dict.iteritems():
                 current_results[key] = value
@@ -229,24 +221,17 @@ class Executor:
 
         return leg_result_dict
 
-
-
-
     def get_lowers(self):
         return self.config_creator.get_lowers()
-
 
     def get_uppers(self):
         return self.config_creator.get_uppers()
 
-
     def get_types(self):
         return self.config_creator.get_types()
 
-
     def get_params_table(self):
         return self.config_creator.get_params_table()
-
 
     def collect_info_files(self, location):
         info_files = glob.glob(location + "/*info.json")
@@ -264,9 +249,6 @@ class Executor:
                 leg_name = info_file_basename.replace("info.json", "")
                 leg_name = leg_name.replace(".", "__")
                 self.leg_names.add(leg_name)
-                print "[D]: leg_name =", leg_name
                 mo = MetricsObject(leg_name, json_dict)
                 metric_obj_array.append(mo)
             return metric_obj_array
-
-

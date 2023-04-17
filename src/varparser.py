@@ -2,18 +2,12 @@ import re
 
 
 class VarParser:
-
-    def __init__(self):
-        pass
-
-
     @staticmethod
     def parse_linspace(regex_matches):
-        """Todo"""
         output_variables = []
         if len(regex_matches) != 0:
             for m in regex_matches:
-                m = m[2:][:-2] # removing curly brakets
+                m = m[2:][:-2]  # removing curly brakets
                 elements = re.split("\s*,\s*", m)
                 if len(elements) != 4:
                     raise ValueError(m, "len(elements) != 4")
@@ -31,14 +25,12 @@ class VarParser:
                 })
         return output_variables
 
-
     @staticmethod
     def parse_enumerations(regex_matches):
-        """Todo"""
         output_variables = []
         if len(regex_matches) != 0:
             for m in regex_matches:
-                m = m[2:][:-2] # removing curly brakets
+                m = m[2:][:-2]  # removing curly brakets
                 parts = m.split(":")
                 if len(parts) == 0:
                     raise ValueError("couldn't parse enumeration, example: [[var:10, 20, 30]]")
@@ -60,10 +52,3 @@ class VarParser:
                         values.append(f)
                 output_variables.append({"name": name, "values": values, "type": "E"})
         return output_variables
-                
-
-
-
-
-
-
